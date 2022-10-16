@@ -51,7 +51,11 @@ class Game {
   playNextMove(previousMoves) {
     const moves = (previousMoves === "") ? [] : previousMoves.split(" ");
     if (this.isTurn(this.colour, moves)) {
-      const nextMove = this.player.getNextMove(moves);
+      const botMove = this.player.getNextMove(moves);
+      if (botMove.resign) {
+        this.api.resignGame(this.gameId)
+      }
+      const nextMove = botMove.move;
       if (nextMove) {
         console.log(this.name + " as " + this.colour + " to move " + nextMove);
         this.api.makeMove(this.gameId, nextMove);
